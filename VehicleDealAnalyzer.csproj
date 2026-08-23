@@ -27,13 +27,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
-
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 
-		<!-- Raw Assets (indexed via TargetPath) -->
+		<!-- Raw Assets -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
