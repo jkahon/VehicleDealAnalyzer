@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Microsoft.Maui;
+using VehicleDealAnalyzer.Services;
 
 namespace VehicleDealAnalyzer;
 
@@ -36,7 +37,8 @@ public class MainActivity : MauiAppCompatActivity
             string? sharedText = intent.GetStringExtra(Intent.ExtraText);
             if (!string.IsNullOrEmpty(sharedText))
             {
-                // Process intent text
+                var shareIntentStore = App.Current?.Handler?.MauiContext?.Services.GetService<ShareIntentStore>();
+                shareIntentStore?.Enqueue(sharedText);
             }
         }
     }

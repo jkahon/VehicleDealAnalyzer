@@ -22,6 +22,7 @@ public static class MauiProgram
         // Register Services
         builder.Services.AddSingleton<DatabaseService>();
         builder.Services.AddSingleton<NhtsaService>();
+        builder.Services.AddSingleton<ShareIntentStore>();
 
         // Register ViewModel and Pages
         builder.Services.AddSingleton<MainViewModel>();

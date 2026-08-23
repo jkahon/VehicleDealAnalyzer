@@ -1,0 +1,57 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userprefs
+*.rsuser
+*.sln.docstates
+
+# Rider / ReSharper
+.idea/
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# VS Code
+.vscode/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]enchmark[Dd]ot[Nn]et.Artifacts/
+
+# MAUI / Xamarin artifacts
+*.apk
+*.aab
+*.ap_*
+*.dex
+*.keystore
+*.jks
+*.pfx
+*.publishproj
+
+# Generated app packages
+AppPackages/
+BundleArtifacts/
+
+# Local environment files
+.env
+.env.*
+
+# Copilot / local tooling spill
+.vs/**/VSGitHubCopilot/

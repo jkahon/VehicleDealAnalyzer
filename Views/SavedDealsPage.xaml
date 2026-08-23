@@ -1,22 +1,218 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:VehicleDealAnalyzer.Models"
+             xmlns:viewModels="clr-namespace:VehicleDealAnalyzer.ViewModels"
              x:Class="VehicleDealAnalyzer.Views.SavedDealsPage"
-             Title="Saved Deals"
-             BackgroundColor="White">
+             x:DataType="viewModels:MainViewModel"
+             Title="Vehicle Deal Analyzer"
+             BackgroundColor="#F5F5F5">
 
-    <VerticalStackLayout Padding="20" Spacing="15" VerticalOptions="Center">
-        <Label Text="Vehicle Deal Analyzer" 
-               FontSize="24" 
-               FontAttributes="Bold" 
-               TextColor="Black" 
-               HorizontalOptions="Center" />
-        
-        <Label Text="If you are seeing this screen, the MAUI rendering engine is working!" 
-               FontSize="14" 
-               TextColor="DarkGray" 
-               HorizontalOptions="Center" 
-               HorizontalTextAlignment="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+            <Label Text="Vehicle Deal Analyzer"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="Black" />
+
+            <Label Text="Paste a Facebook share link or use Android Share to send a post here. The app will estimate deal quality, flag issues, and let you keep or remove it."
+                   FontSize="14"
+                   TextColor="#444444" />
+
+            <Frame Padding="16"
+                   BackgroundColor="White"
+                   BorderColor="#DDDDDD">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Facebook share input"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="Black" />
+
+                    <Editor Text="{Binding RawListingText}"
+                            AutoSize="TextChanges"
+                            MinimumHeightRequest="120"
+                            Placeholder="Paste the Facebook share text or link here"
+                            TextColor="Black"
+                            BackgroundColor="#FAFAFA" />
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Button Text="Analyze"
+                                Command="{Binding AnalyzeCurrentInputCommand}"
+                                HorizontalOptions="Fill"
+                                BackgroundColor="#512BD4"
+                                TextColor="White" />
+                        <Button Text="Load Shared"
+                                Command="{Binding LoadNextSharedPostCommand}"
+                                HorizontalOptions="Fill"
+                                BackgroundColor="#E7E1FF"
+                                TextColor="#2B0B98" />
+                    </HorizontalStackLayout>
+
+                    <Button Text="Open Link in Browser"
+                            Command="{Binding OpenCurrentLinkInBrowserCommand}"
+                            BackgroundColor="#DDEBFF"
+                            TextColor="#114488" />
+
+                    <ActivityIndicator IsRunning="{Binding IsAnalyzing}"
+                                       IsVisible="{Binding IsAnalyzing}"
+                                       Color="#512BD4" />
+
+                    <Label Text="{Binding StatusMessage}"
+                           FontSize="13"
+                           TextColor="#555555" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Padding="16"
+                   BackgroundColor="White"
+                   BorderColor="#DDDDDD">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Current post"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="Black" />
+
+                    <Label Text="{Binding AnalysisSummary}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding VehicleTitle, StringFormat='Vehicle: {0}'}"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           TextColor="Black" />
+
+                    <Label Text="{Binding Price, StringFormat='Price: {0:C0}'}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding MileageText, StringFormat='Mileage: {0}'}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding TitleStatus, StringFormat='Title status: {0}'}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding SellerSignals, StringFormat='Seller signals: {0}'}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding DrivetrainText, StringFormat='Drivetrain: {0}'}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding TrimText, StringFormat='Trim: {0}'}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding VinText, StringFormat='VIN: {0}'}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding ComparablePriceText, StringFormat='Comparable range: {0}'}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding DealRating, StringFormat='Rating: {0}'}"
+                           FontSize="14"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding DealScore, StringFormat='Score: {0}/100'}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#333333" />
+
+                    <Label Text="{Binding CurrentListingUrl, StringFormat='Link: {0}'}"
+                           FontSize="13"
+                           TextColor="#555555"
+                           LineBreakMode="CharacterWrap" />
+
+                    <Button Text="Open Current Link"
+                            Command="{Binding OpenCurrentLinkInBrowserCommand}"
+                            BackgroundColor="#DDEBFF"
+                            TextColor="#114488" />
+
+                    <Label Text="Post text"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="Black" />
+
+                    <Label Text="{Binding CurrentPostText}"
+                           FontSize="14"
+                           TextColor="#222222"
+                           LineBreakMode="WordWrap" />
+
+                    <Label Text="Flagged issues"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="Black" />
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding KnownIssues}"
+                                         Spacing="6">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Label Text="{Binding .}"
+                                       FontSize="13"
+                                       TextColor="#7A1F1F" />
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Button Text="Keep"
+                                Command="{Binding SaveCurrentDealCommand}"
+                                HorizontalOptions="Fill"
+                                BackgroundColor="#2E7D32"
+                                TextColor="White" />
+                        <Button Text="Remove"
+                                Command="{Binding RemoveCurrentPostCommand}"
+                                HorizontalOptions="Fill"
+                                BackgroundColor="#C62828"
+                                TextColor="White" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Padding="16"
+                   BackgroundColor="White"
+                   BorderColor="#DDDDDD">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Kept posts"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="Black" />
+
+                    <CollectionView ItemsSource="{Binding SavedDeals}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:SavedDeal">
+                                <Frame Margin="0,0,0,10"
+                                       Padding="12"
+                                       BackgroundColor="#FAFAFA"
+                                       BorderColor="#E0E0E0">
+                                    <VerticalStackLayout Spacing="6">
+                                        <Label Text="{Binding VehicleTitle}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="Black" />
+                                        <Label Text="{Binding Price, StringFormat='Price: {0:C0}'}"
+                                               FontSize="13"
+                                               TextColor="#333333" />
+                                        <Label Text="{Binding DealRating, StringFormat='Rating: {0}'}"
+                                               FontSize="13"
+                                               TextColor="#333333" />
+                                        <Label Text="{Binding ListingUrl}"
+                                               FontSize="12"
+                                               TextColor="#555555"
+                                               LineBreakMode="CharacterWrap" />
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
 
 </ContentPage>

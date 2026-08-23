@@ -1,13 +1,16 @@
 using VehicleDealAnalyzer.Views;
-using VehicleDealAnalyzer.ViewModels;
-using VehicleDealAnalyzer.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace VehicleDealAnalyzer;
 
 public partial class App : Application
 {
-    public App()
+    private readonly IServiceProvider _services;
+
+    public App(IServiceProvider services)
     {
+        _services = services;
+
         // Catch exceptions that happen before or during InitializeComponent
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
         {
@@ -23,25 +26,24 @@ public partial class App : Application
 
         // Force Light Theme to prevent Dark Mode black-out bugs
         UserAppTheme = AppTheme.Light;
+    }
 
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
         try
         {
-            var dbService = new DatabaseService();
-            var nhtsaService = new NhtsaService();
-            var viewModel = new MainViewModel(nhtsaService, dbService);
-            
-            // Set a direct ContentPage wrapped in NavigationPage
-            MainPage = new NavigationPage(new SavedDealsPage(viewModel));
+            var savedDealsPage = _services.GetRequiredService<SavedDealsPage>();
+            return new Window(new NavigationPage(savedDealsPage));
         }
         catch (Exception ex)
         {
-            RenderErrorPage(ex);
+            return new Window(RenderErrorPage(ex));
         }
     }
 
-    private void RenderErrorPage(Exception ex)
+    private static Page RenderErrorPage(Exception ex)
     {
-        MainPage = new ContentPage
+        return new ContentPage
         {
             BackgroundColor = Colors.White,
             Content = new ScrollView
