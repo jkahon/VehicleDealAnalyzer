@@ -29,4 +29,18 @@ public static class MauiProgram
 
         return builder.Build();
     }
+
+    protected override void OnCreate(Bundle? savedInstanceState)
+{
+    base.OnCreate(savedInstanceState);
+
+    // Global exception handler to log hidden boot errors
+    AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
+    {
+        System.Diagnostics.Debug.WriteLine($"BOOT_ERROR: {args.Exception.Message}");
+    };
+
+    HandleIncomingIntent(Intent);
+    }
+    
 }
