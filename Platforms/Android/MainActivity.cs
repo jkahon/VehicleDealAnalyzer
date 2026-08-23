@@ -2,6 +2,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Microsoft.Maui; // <--- Required for MauiAppCompatActivity
 
 namespace VehicleDealAnalyzer;
 
@@ -14,7 +15,7 @@ namespace VehicleDealAnalyzer;
     new[] { Intent.ActionSend },
     Categories = new[] { Intent.CategoryDefault },
     DataMimeType = "text/plain")]
-public class MainActivity : MauiActivity
+public class MainActivity : MauiAppCompatActivity // <--- Inherit from MauiAppCompatActivity instead
 {
     protected override void OnCreate(Bundle? savedInstanceState)
     {
@@ -23,7 +24,8 @@ public class MainActivity : MauiActivity
     }
 
     protected override void OnNewIntent(Intent? intent)
-    { base.OnNewIntent(intent);
+    {
+        base.OnNewIntent(intent);
         HandleIncomingIntent(intent);
     }
 
