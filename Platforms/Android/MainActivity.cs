@@ -2,7 +2,6 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Microsoft.Maui;
 
 namespace VehicleDealAnalyzer;
@@ -10,7 +9,7 @@ namespace VehicleDealAnalyzer;
 [Activity(
     Theme = "@style/Maui.SplashTheme", 
     MainLauncher = true, 
-    ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation,
+    ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density,
     Exported = true)]
 [IntentFilter(
     new[] { Intent.ActionSend },
@@ -21,13 +20,6 @@ public class MainActivity : MauiAppCompatActivity
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
-
-        // Global exception handler for Android boot errors
-        AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
-        {
-            System.Diagnostics.Debug.WriteLine($"BOOT_ERROR: {args.Exception.Message}");
-        };
-
         HandleIncomingIntent(Intent);
     }
 
@@ -44,7 +36,7 @@ public class MainActivity : MauiAppCompatActivity
             string? sharedText = intent.GetStringExtra(Intent.ExtraText);
             if (!string.IsNullOrEmpty(sharedText))
             {
-                // Pass incoming text to application state
+                // Process intent text
             }
         }
     }
