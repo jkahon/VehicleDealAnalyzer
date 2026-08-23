@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:VehicleDealAnalyzer.ViewModels"
+             xmlns:models="clr-namespace:VehicleDealAnalyzer.Models"
+             x:Class="VehicleDealAnalyzer.Views.SavedDealsPage"
+             x:DataType="vm:MainViewModel"
+             Title="Saved Vehicle Deals">
+
+    <Grid RowDefinitions="Auto,*">
+        <Button Grid.Row="0"
+                Text="Refresh Saved Deals"
+                Command="{Binding LoadSavedDealsCommand}"
+                Margin="15,10"
+                HorizontalOptions="Fill" />
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding SavedDeals}"
+                        EmptyView="No saved deals yet. Share a marketplace listing to get started!">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:SavedDeal">
+                    <SwipeView Margin="10,5">
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete"
+                                           BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainViewModel}}, Path=DeleteSavedDealCommand}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame CornerRadius="8"
+                               Padding="15"
+                               HasShadow="True"
+                               BorderColor="#E0E0E0">
+                            <VerticalStackLayout Spacing="6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding VehicleTitle}"
+                                           FontAttributes="Bold"
+                                           FontSize="18" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Price, StringFormat='{0:C0}'}"
+                                           FontAttributes="Bold"
+                                           FontSize="18"
+                                           TextColor="#2E7D32" />
+                                </Grid>
+
+                                <HorizontalStackLayout Spacing="10">
+                                    <Label Text="Rating:" FontAttributes="Bold" />
+                                    <Label Text="{Binding DealRating}" />
+                                </HorizontalStackLayout>
+
+                                <Label Text="{Binding DateSaved, StringFormat='Saved on: {0:MM/dd/yyyy HH:mm}'}"
+                                       FontSize="12"
+                                       TextColor="Gray" />
+                                
+                                <Label Text="Swipe left to delete"
+                                       FontSize="10"
+                                       TextColor="LightGray"
+                                       HorizontalOptions="End" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
