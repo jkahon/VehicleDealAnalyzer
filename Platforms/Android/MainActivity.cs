@@ -2,7 +2,8 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Microsoft.Maui; // <--- Required for MauiAppCompatActivity
+using Android.Runtime;
+using Microsoft.Maui;
 
 namespace VehicleDealAnalyzer;
 
@@ -15,11 +16,18 @@ namespace VehicleDealAnalyzer;
     new[] { Intent.ActionSend },
     Categories = new[] { Intent.CategoryDefault },
     DataMimeType = "text/plain")]
-public class MainActivity : MauiAppCompatActivity // <--- Inherit from MauiAppCompatActivity instead
+public class MainActivity : MauiAppCompatActivity
 {
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
+
+        // Global exception handler for Android boot errors
+        AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
+        {
+            System.Diagnostics.Debug.WriteLine($"BOOT_ERROR: {args.Exception.Message}");
+        };
+
         HandleIncomingIntent(Intent);
     }
 
