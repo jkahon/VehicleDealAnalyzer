@@ -21,6 +21,9 @@ public partial class App : Application
 
         InitializeComponent();
 
+        // Force Light Theme to prevent Dark Mode black-out bugs
+        UserAppTheme = AppTheme.Light;
+
         try
         {
             var dbService = new DatabaseService();
